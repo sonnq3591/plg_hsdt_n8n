@@ -22,7 +22,7 @@ class SimpleTextFormatter:
         print(f"📝 SimpleTextFormatter initialized for batch: {batch_id}")
 
     def format_simple_text(self, placeholder_key, content):
-        """Format simple text content"""
+        """Format simple text content with selective bold formatting"""
         print(f"📝 Formatting {placeholder_key} as simple text")
         
         # Create document
@@ -32,12 +32,20 @@ class SimpleTextFormatter:
         style.font.size = Pt(14)
         
         # Add simple paragraph
-        para = doc.add_paragraph(content)
+        para = doc.add_paragraph()
+        run = para.add_run(content)
         
-        # Minimal formatting - let template control styling
-        for run in para.runs:
-            run.font.name = 'Times New Roman'
-            run.font.size = Pt(14)
+        # Standard formatting
+        run.font.name = 'Times New Roman'
+        run.font.size = Pt(14)
+        
+        # SELECTIVE BOLD: Only ten_goi_thau should be bold
+        if placeholder_key == "ten_goi_thau":
+            run.bold = True
+            print(f"✅ Created BOLD text for {placeholder_key}: {content}")
+        else:
+            run.bold = False  # Explicitly set to normal
+            print(f"✅ Created NORMAL text for {placeholder_key}: {content}")
         
         # Save
         output_path = self.docx_dir / f"{placeholder_key}_formatted.docx"

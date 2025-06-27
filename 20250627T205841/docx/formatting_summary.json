@@ -1,0 +1,26 @@
+{
+  "batch_id": "20250627T205841",
+  "formatted_placeholders": [
+    "ten_goi_thau",
+    "pham_vi_cung_cap",
+    "can_cu_phap_ly",
+    "muc_dich_cong_viec",
+    "cac_buoc_thuc_hien",
+    "chu_dau_tu",
+    "thoi_gian_hoan_thanh",
+    "thoi_gian_bao_hanh"
+  ],
+  "formatted_files": {
+    "ten_goi_thau": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T205841\\docx\\ten_goi_thau_formatted.docx",
+    "pham_vi_cung_cap": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T205841\\docx\\pham_vi_cung_cap_formatted.docx",
+    "can_cu_phap_ly": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T205841\\docx\\can_cu_phap_ly_formatted.docx",
+    "muc_dich_cong_viec": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T205841\\docx\\muc_dich_cong_viec_formatted.docx",
+    "cac_buoc_thuc_hien": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T205841\\docx\\cac_buoc_thuc_hien_formatted.docx",
+    "chu_dau_tu": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T205841\\docx\\chu_dau_tu_formatted.docx",
+    "thoi_gian_hoan_thanh": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T205841\\docx\\thoi_gian_hoan_thanh_formatted.docx",
+    "thoi_gian_bao_hanh": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T205841\\docx\\thoi_gian_bao_hanh_formatted.docx"
+  },
+  "total_formatted": 8,
+  "formatter_type": "modular",
+  "timestamp": "2025-06-27T23:00:49.047416"
+}

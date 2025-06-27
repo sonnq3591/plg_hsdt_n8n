@@ -79,8 +79,16 @@ class ModularFormatter:
                 return formatter.format_simple_text(placeholder_key, content)
                 
             elif content_type == "table":
-                formatter = TableFormatter(self.batch_id)
-                return formatter.format_table(placeholder_key, content)
+                # NEW: Check if this is a conditional table
+                if isinstance(content, dict) and content.get("conditional_logic"):
+                    # Import the new conditional table formatter
+                    from format_conditional_table import ConditionalTableFormatter
+                    formatter = ConditionalTableFormatter(self.batch_id)
+                    return formatter.format_conditional_table(placeholder_key, content)
+                else:
+                    # Regular table
+                    formatter = TableFormatter(self.batch_id)
+                    return formatter.format_table(placeholder_key, content)
                 
             elif content_type == "structured_content":
                 formatter = StructuredContentFormatter(self.batch_id)
