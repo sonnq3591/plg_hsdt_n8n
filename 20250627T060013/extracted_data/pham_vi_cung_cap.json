@@ -1,0 +1,35 @@
+{
+  "content": {
+    "headers": [
+      "STT",
+      "Danh mục dịch vụ",
+      "Khối lượng",
+      "Đơn vị tính",
+      "Địa điểm thực hiện",
+      "Ngày hoàn thành"
+    ],
+    "rows": [
+      [
+        "1",
+        "Chỉnh lý tài liệu phòng hành chính tổng hợp",
+        "33,81",
+        "Mét",
+        "Trường Đại học Luật Hà Nội, địa chỉ: Số 87 đường Nguyễn Chí Thanh, phường Láng Thượng, quận Đống Đa, thành phố Hà Nội",
+        "120 ngày kể từ ngày hợp đồng có hiệu lực"
+      ],
+      [
+        "2",
+        "Chỉnh lý tài liệu phòng đào tạo đại học và sau đại học",
+        "182,31",
+        "Mét",
+        "Trường Đại học Luật Hà Nội, địa chỉ: Số 87 đường Nguyễn Chí Thanh, phường Láng Thượng, quận Đống Đa, thành phố Hà Nội",
+        "120 ngày kể từ ngày hợp đồng có hiệu lực"
+      ]
+    ],
+    "total_rows": 2
+  },
+  "raw_csv": "STT,Danh mục dịch vụ,Khối lượng,Đơn vị tính,Địa điểm thực hiện,Ngày hoàn thành\n1,\"Chỉnh lý tài liệu phòng hành chính tổng hợp\",\"33,81\",Mét,\"Trường Đại học Luật Hà Nội, địa chỉ: Số 87 đường Nguyễn Chí Thanh, phường Láng Thượng, quận Đống Đa, thành phố Hà Nội\",\"120 ngày kể từ ngày hợp đồng có hiệu lực\"\n2,\"Chỉnh lý tài liệu phòng đào tạo đại học và sau đại học\",\"182,31\",Mét,\"Trường Đại học Luật Hà Nội, địa chỉ: Số 87 đường Nguyễn Chí Thanh, phường Láng Thượng, quận Đống Đa, thành phố Hà Nội\",\"120 ngày kể từ ngày hợp đồng có hiệu lực\"",
+  "type": "table",
+  "extraction_timestamp": "2025-06-27T06:51:29.186231",
+  "source_file": "BMMT.pdf"
+}

@@ -1,0 +1,17 @@
+# Vietnamese Procurement Document Processor Dependencies
+
+# Core document processing
+python-docx==0.8.11
+PyPDF2==3.0.1
+
+# OpenAI API for text extraction
+openai==0.28.1
+
+# Environment variables
+python-dotenv==1.0.0
+
+# File and path handling (built into Python 3.4+)
+pathlib2==2.3.7; python_version < "3.4"
+
+# Additional utilities (optional but recommended)
+requests==2.31.0

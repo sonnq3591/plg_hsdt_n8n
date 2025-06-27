@@ -1,0 +1,18 @@
+{
+  "batch_id": "20250627T060013",
+  "generated_documents": [
+    {
+      "file": "C:\\Users\\Administrator\\Documents\\BID_PROCESSOR\\20250627T060013\\docx\\02_MUC_DO_HIEU_BIET_output.docx",
+      "template": "02_MUC_DO_HIEU_BIET_template.docx",
+      "placeholders_replaced": 4,
+      "total_placeholders": 4
+    }
+  ],
+  "total_documents": 1,
+  "available_placeholders": [
+    "ten_goi_thau",
+    "pham_vi_cung_cap",
+    "can_cu_phap_ly",
+    "muc_dich_cong_viec"
+  ]
+}
