@@ -75,36 +75,78 @@ class DocumentGenerator:
         return output_file
 
     def replace_simple_text_placeholder(self, doc, placeholder_key, content):
-        """Use DOCUMENT 02 PROVEN METHOD: Create formatted DOCX and use paragraph replacement"""
+        """FIXED: Check template formatting BEFORE clearing runs"""
         placeholder_tag = f"{{{{{placeholder_key}}}}}"
-        print(f"📝 Using Document 02 proven method for {placeholder_tag}")
+        print(f"📝 Run-level replacement for {placeholder_tag}")
         
-        # Create a temporary formatted DOCX file using Document 02's approach
-        temp_doc = Document()
-        style = temp_doc.styles['Normal']
-        style.font.name = 'Times New Roman'
-        style.font.size = Pt(14)
+        replaced = False
         
-        # Add the content as a simple paragraph
-        para = temp_doc.add_paragraph(content)
+        for paragraph in doc.paragraphs:
+            # Check if placeholder exists in this paragraph
+            full_text = paragraph.text
+            if placeholder_tag not in full_text:
+                continue
+            
+            print(f"📍 Found {placeholder_tag} in paragraph: '{full_text[:100]}...'")
+            
+            # Use YOUR PROVEN cross-run replacement method
+            i = 0
+            while i < len(paragraph.runs):
+                # Try to match across runs
+                run_text = ""
+                j = i
+                while j < len(paragraph.runs) and len(run_text) < 200:
+                    run_text += paragraph.runs[j].text
+                    j += 1
+
+                    if placeholder_tag in run_text:
+                        # Split into 3 parts: before, replacement, after
+                        before, after = run_text.split(placeholder_tag, 1)
+
+                        # ✅ CHECK TEMPLATE FORMATTING BEFORE CLEARING RUNS
+                        should_be_bold = False
+                        for k in range(i, j):
+                            if paragraph.runs[k].bold:
+                                should_be_bold = True
+                                print(f"  🎯 Template formatting detected: run[{k}] is bold")
+                                break
+                        
+                        print(f"  📋 Template says {placeholder_tag} should be bold: {should_be_bold}")
+
+                        # Clear affected runs (AFTER checking formatting)
+                        for k in range(i, j):
+                            paragraph.runs[k].text = ""
+
+                        # Write back preserving TEMPLATE formatting
+                        if before:
+                            paragraph.runs[i].text = before
+                        
+                        # Set replacement content with template formatting
+                        replacement_run = paragraph.runs[i + 1] if i + 1 < len(paragraph.runs) else paragraph.runs[i]
+                        replacement_run.text = content
+                        
+                        # Apply template formatting
+                        replacement_run.bold = should_be_bold
+                        replacement_run.font.name = "Times New Roman"
+                        replacement_run.font.size = Pt(14)
+                        
+                        print(f"  → Applied template formatting: bold={should_be_bold}")
+                        
+                        if after and i + 2 < len(paragraph.runs):
+                            paragraph.runs[i + 2].text = after
+
+                        print(f"✅ Replaced {placeholder_tag} with: '{content}' (bold={should_be_bold})")
+                        replaced = True
+                        i = j  # move past replaced section
+                        break
+                    else:
+                        continue  # inner loop didn't break
+                    break  # outer loop: matched a placeholder, break
+
+                i += 1
         
-        # Apply Document 02's proven formatting
-        para.paragraph_format.first_line_indent = Inches(0.5)
-        para.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-        para.paragraph_format.space_after = Pt(6)
-        
-        # Ensure font formatting
-        for run in para.runs:
-            run.font.name = 'Times New Roman'
-            run.font.size = Pt(14)
-        
-        # Save temporary file
-        temp_path = self.docx_dir / f"{placeholder_key}_formatted.docx"
-        temp_doc.save(temp_path)
-        print(f"✅ Created formatted file: {temp_path}")
-        
-        # Now use the PROVEN paragraph replacement method
-        return self.replace_structured_placeholder(doc, placeholder_key)
+        return replaced
+
 
     def replace_structured_placeholder(self, doc, placeholder_key):
         """YOUR PROVEN replacement method for structured content AND tables"""

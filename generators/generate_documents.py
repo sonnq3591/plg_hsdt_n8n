@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Document Generator - FIXED with Hybrid Replacement Logic
-Combines run-level replacement for simple text with your proven paragraph replacement
+Document Generator - FINAL FIXED VERSION
+Selective formatting: only applies bold to the specific replaced content
 """
 
 import os
@@ -15,7 +15,7 @@ from copy import deepcopy
 import re
 
 class DocumentGenerator:
-    """Generate final documents with HYBRID replacement logic"""
+    """Generate final documents with SELECTIVE formatting"""
     
     def __init__(self):
         """Initialize the document generator"""
@@ -75,77 +75,121 @@ class DocumentGenerator:
         return output_file
 
     def replace_simple_text_placeholder(self, doc, placeholder_key, content):
-        """RESTORED: Original working run-level replacement method"""
+        """PRECISE FIX: Character-by-character formatting preservation"""
         placeholder_tag = f"{{{{{placeholder_key}}}}}"
-        print(f"📝 Run-level replacement for {placeholder_tag}")
+        print(f"📝 Replacing {placeholder_tag} with: '{content}'")
         
         replaced = False
         
-        for paragraph in doc.paragraphs:
-            # Check if placeholder exists in this paragraph
+        for para_idx, paragraph in enumerate(doc.paragraphs):
             full_text = paragraph.text
             if placeholder_tag not in full_text:
                 continue
             
-            print(f"📍 Found {placeholder_tag} in paragraph: '{full_text[:100]}...'")
+            print(f"📍 Found {placeholder_tag} in paragraph {para_idx}")
             
-            # Use YOUR PROVEN cross-run replacement method
-            i = 0
-            while i < len(paragraph.runs):
-                # Try to match across runs
-                run_text = ""
-                j = i
-                while j < len(paragraph.runs) and len(run_text) < 200:
-                    run_text += paragraph.runs[j].text
-                    j += 1
-
-                    if placeholder_tag in run_text:
-                        # Split into 3 parts: before, replacement, after
-                        before, after = run_text.split(placeholder_tag, 1)
-
-                        # Clear affected runs
-                        for k in range(i, j):
-                            paragraph.runs[k].text = ""
-
-                        # Write back preserving TEMPLATE formatting (not content rules)
-                        if before:
-                            paragraph.runs[i].text = before
-                        
-                        # Set replacement content 
-                        replacement_run = paragraph.runs[i + 1]
-                        replacement_run.text = content
-                        
-                        # PRESERVE TEMPLATE FORMATTING: Check if ANY run in the span was bold
-                        should_be_bold = False
-                        for k in range(i, j):
-                            if paragraph.runs[k].bold:
-                                should_be_bold = True
-                                break
-                        
-                        # Apply template formatting
-                        replacement_run.bold = should_be_bold
-                        replacement_run.font.name = "Times New Roman"
-                        replacement_run.font.size = Pt(14)
-                        
-                        print(f"  → Applied template formatting: bold={should_be_bold}")
-                        
-                        if after:
-                            paragraph.runs[i + 2].text = after
-
-                        print(f"✅ Replaced {placeholder_tag} with: '{content}'")
-                        replaced = True
-                        i = j  # move past replaced section
-                        break
-                    else:
-                        continue  # inner loop didn't break
-                    break  # outer loop: matched a placeholder, break
-
-                i += 1
+            # Build character-level formatting map from original runs
+            char_formatting = {}
+            char_pos = 0
+            
+            for run in paragraph.runs:
+                run_text = run.text
+                run_bold = run.bold if run.bold is not None else False
+                
+                for char in run_text:
+                    char_formatting[char_pos] = run_bold
+                    char_pos += 1
+            
+            # Check placeholder formatting
+            placeholder_start = full_text.find(placeholder_tag)
+            template_bold = char_formatting.get(placeholder_start, False)
+            
+            print(f"   🎯 Template: Placeholder at pos {placeholder_start} should be bold = {template_bold}")
+            
+            # Create new text
+            new_text = full_text.replace(placeholder_tag, content)
+            before_text, after_text = full_text.split(placeholder_tag, 1)
+            
+            # Clear all runs
+            for run in paragraph.runs:
+                run.text = ""
+            
+            # Rebuild with precise character formatting
+            current_run_idx = 0
+            current_segment = ""
+            current_bold = None
+            
+            def add_segment_to_run(text, bold_format):
+                nonlocal current_run_idx
+                if not text:
+                    return
+                    
+                if current_run_idx < len(paragraph.runs):
+                    run = paragraph.runs[current_run_idx]
+                else:
+                    run = paragraph.add_run()
+                
+                run.text = text
+                run.bold = bold_format
+                run.font.name = "Times New Roman"
+                run.font.size = Pt(14)
+                current_run_idx += 1
+            
+            # Process "before" text with original formatting
+            for i, char in enumerate(before_text):
+                char_bold = char_formatting.get(i, False)
+                
+                if current_bold is None:
+                    current_bold = char_bold
+                
+                if char_bold == current_bold:
+                    current_segment += char
+                else:
+                    # Formatting changed, save current segment
+                    add_segment_to_run(current_segment, current_bold)
+                    current_segment = char
+                    current_bold = char_bold
+            
+            # Save any remaining "before" segment
+            if current_segment:
+                add_segment_to_run(current_segment, current_bold)
+                current_segment = ""
+            
+            # Add replacement content with template formatting
+            add_segment_to_run(content, template_bold)
+            
+            # Process "after" text with original formatting
+            after_start_pos = len(before_text) + len(placeholder_tag)
+            current_bold = None
+            
+            for i, char in enumerate(after_text):
+                original_pos = after_start_pos + i
+                char_bold = char_formatting.get(original_pos, False)
+                
+                if current_bold is None:
+                    current_bold = char_bold
+                
+                if char_bold == current_bold:
+                    current_segment += char
+                else:
+                    # Formatting changed, save current segment
+                    add_segment_to_run(current_segment, current_bold)
+                    current_segment = char
+                    current_bold = char_bold
+            
+            # Save any remaining "after" segment
+            if current_segment:
+                add_segment_to_run(current_segment, current_bold)
+            
+            print(f"   ✅ Applied character-precise formatting: '{content}' (bold={template_bold})")
+            
+            replaced = True
+            break
         
         return replaced
 
     def replace_structured_placeholder(self, doc, placeholder_key):
-        """YOUR PROVEN replacement method for structured content AND tables"""
+        """KEEP WORKING: Your proven replacement method for structured content AND tables"""
         placeholder_tag = f"{{{{{placeholder_key}}}}}"
         source_path = self.docx_dir / f"{placeholder_key}_formatted.docx"
         
@@ -153,7 +197,7 @@ class DocumentGenerator:
             print(f"❌ Missing source doc: {source_path}")
             return False
 
-        print(f"🔄 Using YOUR PROVEN method for {placeholder_tag}")
+        print(f"🔄 Using structured replacement for {placeholder_tag}")
         
         source_doc = Document(source_path)
         
@@ -190,20 +234,20 @@ class DocumentGenerator:
                                     break
                             
                             if inserted_p:
-                                # YOUR PROVEN FONT PRESERVATION for paragraphs
+                                # Font preservation for paragraphs
                                 for run in inserted_p.runs:
                                     run.font.size = Pt(14)
                                     run.font.name = "Times New Roman"
                         except:
                             pass  # Skip formatting errors for complex elements
                 
-                print(f"✅ Applied YOUR PROVEN replacement method with table support")
+                print(f"✅ Applied structured replacement")
                 return True
         
         return False
 
     def replace_placeholder_hybrid(self, doc, placeholder_key, master_data):
-        """HYBRID replacement: Choose method based on content type"""
+        """FIXED: Hybrid replacement with selective formatting"""
         placeholders = master_data.get("placeholders", {})
         
         if placeholder_key not in placeholders:
@@ -212,16 +256,14 @@ class DocumentGenerator:
         
         placeholder_data = placeholders[placeholder_key]
         content_type = placeholder_data.get("type", "unknown")
+        content = placeholder_data.get("content", "")
         
-        print(f"🎯 Processing {placeholder_key} as type: {content_type}")
+        print(f"\n🎯 Processing {placeholder_key} (type: {content_type})")
         
         if content_type == "simple_text":
-            # Use run-level replacement for simple text
-            content = placeholder_data.get("content", "")
             return self.replace_simple_text_placeholder(doc, placeholder_key, content)
             
         elif content_type in ["structured_content", "table"]:
-            # Use YOUR PROVEN paragraph replacement for complex content
             return self.replace_structured_placeholder(doc, placeholder_key)
             
         else:
@@ -231,8 +273,6 @@ class DocumentGenerator:
     def apply_final_formatting(self, doc):
         """Apply final formatting: 1.4 line spacing to entire document"""
         print("🎨 Applying final formatting: 1.4 line spacing...")
-        
-        from docx.shared import Inches
         
         # Apply 1.4 line spacing to all paragraphs
         for para in doc.paragraphs:
@@ -248,27 +288,38 @@ class DocumentGenerator:
         print("✅ Applied 1.4 line spacing to entire document")
 
     def generate_document(self, template_name, output_name, placeholders_to_replace):
-        """Generate document with HYBRID replacement logic"""
+        """FIXED: Generate document with selective formatting"""
         print(f"\n📄 GENERATING: {output_name}")
         print("=" * 60)
         
-        # Load master data to determine replacement strategies
+        # Load master data
         master_data = self.load_master_data()
         
         # Copy template to working file
         working_file = self.copy_template_to_working_file(template_name, output_name)
         
-        # Load the document
-        doc = Document(working_file)
-        
-        # Replace each placeholder using HYBRID logic
+        # Process placeholders ONE BY ONE with fresh document loads
         replaced_count = 0
+        
         for placeholder_key in placeholders_to_replace:
+            print(f"\n🔄 Processing placeholder: {placeholder_key}")
+            
+            # Load fresh document for each placeholder to avoid contamination
+            doc = Document(working_file)
+            
             success = self.replace_placeholder_hybrid(doc, placeholder_key, master_data)
+            
             if success:
                 replaced_count += 1
+                # Save immediately after each successful replacement
+                doc.save(working_file)
+                print(f"💾 Saved document after replacing {placeholder_key}")
+            else:
+                print(f"❌ Failed to replace {placeholder_key}")
         
-        # Save the final document with 1.4 line spacing
+        # Final formatting and save
+        print(f"\n🎨 Applying final formatting...")
+        doc = Document(working_file)
         self.apply_final_formatting(doc)
         doc.save(working_file)
         
@@ -290,8 +341,8 @@ class DocumentGenerator:
         return summary
 
     def generate_all_documents(self):
-        """Generate all documents with hybrid replacement"""
-        print("\n📄 GENERATING: All Documents with Hybrid Logic")
+        """Generate all documents with selective formatting"""
+        print("\n📄 GENERATING: All Documents with Selective Formatting")
         print("=" * 60)
         
         # Load formatting summary
@@ -387,7 +438,7 @@ class DocumentGenerator:
         return len(generated_documents) > 0
 
 def main():
-    print("📄 Document Generator - FIXED with Hybrid Replacement Logic")
+    print("📄 Document Generator - FINAL FIXED VERSION")
     print("=" * 70)
     
     try:
