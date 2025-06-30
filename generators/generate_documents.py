@@ -364,22 +364,47 @@ class DocumentGenerator:
         documents_to_generate = [
             {
                 "template": "02_MUC_DO_HIEU_BIET_template.docx",
-                "output": "02_MUC_DO_HIEU_BIET_output.docx",
+                "output": "02_MUC_DO_HIEU_BIET.docx",
                 "placeholders": available_placeholders
             },
             {
                 "template": "04_CAM_KET_DAP_UNG_YEU_CAU_CHUONG_V_template.docx",
-                "output": "04_CAM_KET_DAP_UNG_YEU_CAU_CHUONG_V_output.docx",
+                "output": "04_CAM_KET_DAP_UNG_YEU_CAU_CHUONG_V.docx",
+                "placeholders": available_placeholders
+            },
+            {
+                "template": "05_CAM_KET_DAP_UNG_VPP_template.docx",
+                "output": "05_CAM_KET_DAP_UNG_VPP.docx",
+                "placeholders": available_placeholders
+            },
+            {
+                "template": "06_TINH_BAO_MAT_template.docx",
+                "output": "06_TINH_BAO_MAT.docx",
+                "placeholders": available_placeholders
+            },
+            {
+                "template": "08_CAM_KET_THUC_PM_template.docx",
+                "output": "08_CAM_KET_THUC_PM.docx",
+                "placeholders": available_placeholders
+            },
+            {
+                "template": "10_QUY_DINH_AP_DUNG_template.docx",
+                "output": "10_QUY_DINH_AP_DUNG.docx",
                 "placeholders": available_placeholders
             },
             {
                 "template": "11_CAM_KET_THUC_HIEN_GOI_THAU_template.docx", 
-                "output": "11_CAM_KET_THUC_HIEN_GOI_THAU_output.docx",
+                "output": "11_CAM_KET_THUC_HIEN_GOI_THAU.docx",
                 "placeholders": available_placeholders
             },
             {
                 "template": "12_CAM_KET_BAO_HANH_XU_LY_SU_CO_template.docx",
-                "output": "12_CAM_KET_BAO_HANH_XU_LY_SU_CO_output.docx", 
+                "output": "12_CAM_KET_BAO_HANH_XU_LY_SU_CO.docx", 
+                "placeholders": available_placeholders
+            },
+            {
+                "template": "14_GIAI_PHAP_VA_PHUONG_PHAP_LUAN_THUC_HIEN_GOI_THAU_template.docx",
+                "output": "14_GIAI_PHAP_VA_PHUONG_PHAP_LUAN_THUC_HIEN_GOI_THAU.docx", 
                 "placeholders": available_placeholders
             }
         ]

@@ -15,3 +15,6 @@ pathlib2==2.3.7; python_version < "3.4"
 
 # Additional utilities (optional but recommended)
 requests==2.31.0
+
+matplotlib
+pandas
